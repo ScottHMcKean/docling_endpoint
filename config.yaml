@@ -11,15 +11,6 @@ secrets:
   client_id_key: sp-id
   client_secret_key: sp-auth
 
-pip_requirements:
-  - "mlflow"
-  - "docling"
-  - "onnxruntime"
-  - "pymssql==2.3.8"
-  - "databricks-ai-bridge"
-  - "databricks-sdk"
-  - "hf_transfer"
-
 mlflow:
   experiment_path: "/Workspace/Users/scott.mckean@databricks.com/experiments/docling"
   registered_model_name: "docling_model"
@@ -27,5 +18,5 @@ mlflow:
 serving:
   endpoint_name: "docling-parser"
   workload_size: "Small"
-  workload_type: "GPU_SMALL"
+  workload_type: "CPU"
   scale_to_zero: true

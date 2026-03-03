@@ -5,17 +5,17 @@ resources:
       tasks:
         - task_key: "prepare_and_parse"
           notebook_task:
-            notebook_path: ../src/notebooks/01_prepare_and_parse.py
+            notebook_path: ../01_prepare_and_parse.py
 
         - task_key: "inspect_models"
           depends_on:
             - task_key: "prepare_and_parse"
           notebook_task:
-            notebook_path: ../src/notebooks/03_inspect_models.py
+            notebook_path: ../03_inspect_models.py
 
     docling_deploy:
       name: "[${bundle.target}] Docling Deploy Endpoint"
       tasks:
         - task_key: "deploy_endpoint"
           notebook_task:
-            notebook_path: ../src/notebooks/02_deploy_endpoint.py
+            notebook_path: ../02_deploy_endpoint.py

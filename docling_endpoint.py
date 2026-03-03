@@ -1,9 +1,11 @@
+import io
 import os
 import tempfile
 from pathlib import Path
-from mlflow.pyfunc import PythonModel
 from typing import List
+
 import mlflow
+from mlflow.pyfunc import PythonModel
 
 from databricks.sdk import WorkspaceClient
 
@@ -55,27 +57,21 @@ class DoclingModel(PythonModel):
 
             result = self.converter.convert(local_input_path)
 
-            with tempfile.TemporaryDirectory() as tmpdir:
-                temp_path = f"{tmpdir}/{file_stem}.md"
-                markdown_content = result.document.export_to_markdown(temp_path)
+            md_path = f"{self.output_volume_root}/{file_stem}.md"
+            self.w.files.upload(
+                md_path,
+                io.BytesIO(result.document.export_to_markdown().encode("utf-8")),
+                overwrite=True,
+            )
 
-                # Write the markdown content to the file
-                with open(temp_path, "w") as f:
-                    f.write(markdown_content)
+            json_path = f"{self.output_volume_root}/{file_stem}.json"
+            self.w.files.upload(
+                json_path,
+                io.BytesIO(result.document.model_dump_json(indent=2).encode("utf-8")),
+                overwrite=True,
+            )
 
-                # Upload to Volumes using Databricks SDK
-                volume_path = f"{self.output_volume_root}/{file_stem}.md"
-
-                with open(temp_path, "r") as f:
-                    file_data = f.read()
-
-                self.w.dbutils.fs.put(
-                    file=volume_path,
-                    contents=file_data,
-                    overwrite=True,
-                )
-
-            output_paths.append(volume_path)
+            output_paths.append(md_path)
 
         return output_paths
 

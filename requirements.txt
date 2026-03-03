@@ -1,0 +1,7 @@
+mlflow
+docling
+onnxruntime
+pymssql==2.3.8
+databricks-ai-bridge
+databricks-sdk
+hf_transfer
