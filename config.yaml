@@ -1,0 +1,31 @@
+host: "https://adb-984752964297111.11.azuredatabricks.net/"
+catalog: shm
+schema: multimodal
+
+volumes:
+  raw_docs: raw_docs
+  exports: exports
+
+secrets:
+  scope: shm
+  client_id_key: sp-id
+  client_secret_key: sp-auth
+
+pip_requirements:
+  - "mlflow"
+  - "docling"
+  - "onnxruntime"
+  - "pymssql==2.3.8"
+  - "databricks-ai-bridge"
+  - "databricks-sdk"
+  - "hf_transfer"
+
+mlflow:
+  experiment_path: "/Workspace/Users/scott.mckean@databricks.com/experiments/docling"
+  registered_model_name: "docling_model"
+
+serving:
+  endpoint_name: "docling-parser"
+  workload_size: "Small"
+  workload_type: "GPU_SMALL"
+  scale_to_zero: true
