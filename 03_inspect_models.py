@@ -99,5 +99,5 @@ print(f"Endpoint: {endpoint_name}")
 print(f"Input:    {test_path}")
 
 deploy_client = get_deploy_client("databricks")
-response = deploy_client.predict(endpoint=endpoint_name, inputs=[test_path])
+response = deploy_client.predict(endpoint=endpoint_name, inputs={"inputs": [test_path]})
 print(f"Response: {response}")

@@ -50,9 +50,9 @@ class DoclingModel(PythonModel):
         for input_path in model_input:
             file_stem = Path(input_path).stem
 
-            # Download the file from the volume to a local temp file
             with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
-                self.w.files.download_to(input_path, tmpfile.name)
+                resp = self.w.files.download(input_path)
+                tmpfile.write(resp.contents.read())
                 local_input_path = tmpfile.name
 
             result = self.converter.convert(local_input_path)
